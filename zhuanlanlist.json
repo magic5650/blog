@@ -1,7 +1,12 @@
 ﻿{
 "default": [
-{ "slug":"jszxs" },
-{ "slug":"hibetterme" },
-{ "slug":"lswlsw" }
+{ "zhuanlanId":"jszxs" },
+{ "zhuanlanId":"hibetterme" },
+{ "zhuanlanId":"lswlsw" }
+],
+"movie": [
+{ "zhuanlanId":"zhimovie" },
+{ "zhuanlanId":"happy" },
+{ "zhuanlanId":"jennyyy" }
 ]
 }
