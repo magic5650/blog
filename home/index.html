@@ -4,7 +4,7 @@ layout: home
 <div class="profile">
 	<div class="profile-main">
 		<div class="top">
-			<span class="name">{{ site.author }}</span>，<span class="bio" title="http://zhaoyuxiang.cn"><a class=" external" rel="nofollow noreferrer" target="_blank" href="{{ site.url }}">{{ site.url }}</a></span>
+			<span class="name">{{ site.author }}</span>，<span class="bio" title="https://magic5650.github.io/blog"><a class=" external" rel="nofollow noreferrer" target="_blank" href="{{ site.url }}">{{ site.url }}</a></span>
 		</div>
 		<div class="body clearfix">
 			<div class="profile-avatar"><img src="{{ "/assets/avatar.jpg" | prepend: site.baseurl }}" alt="{{ site.author }}" /></div>
@@ -28,7 +28,7 @@ layout: home
 							<span class="major">{{ site.major }}</span>
 						</div>
 						{% if site.resume %}
-						<div class="resume"><a href="{{ site.resume}}" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i><span>My resume</span></a></div>
+						<div class="resume"><a href="{{ site.resume}}" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i><span>简书博客</span></a></div>
 						{% endif %}
 					</div>
 					<div class="description">{{ site.profile}}</div>
@@ -38,13 +38,13 @@ layout: home
 	</div>
 	<div class="profile-navbar clearfix">
 		<a href="{{ "/home" | prepend: site.baseurl }}"><i class="fa fa-home" aria-hidden="true"></i></a>
-		<a href="{{ "/index.html" | prepend: site.baseurl }}" target="_blank">Blog<span>{{ site.posts.size }}</span></a>
-		<a href="{{ "/about" | prepend: site.baseurl }}" target="_blank">About</a>
+		<a href="{{ "/index.html" | prepend: site.baseurl }}" target="_blank">博客<span>{{ site.posts.size }}</span></a>
+		<a href="{{ "/about" | prepend: site.baseurl }}" target="_blank">关于</a>
 	</div>
 </div>
 
 <div class="home-category">
-  <h1 class="page-heading">Category</h1>
+  <h1 class="page-heading">文章列表</h1>
 
   <ul class="post-list">
 

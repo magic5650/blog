@@ -1,23 +1,23 @@
 # Site settings
 title: 诗宁
-url: "http://zhaoyuxiang.cn/blog"    # the protocol and hostname of your site, eg. `http://zhaoyuxiang.cn/blog`
+url: "https://magic5650.github.io/blog"    # the protocol and hostname of your site, eg. `http://zhaoyuxiang.cn/blog`
 baseurl: "" # the prefix of your site uri, eg. `/bohu-jekyll-theme` or just one slash `/`
 #timezone: Asia/Shanghai
-description: 天道总司的个人博客网站,前端HTML、HTML5、CSS、CSS3、JavaScript、JQuery等编程经验总结分享。
+description: magic5650的个人博客网站。
 # Your information
-email: me@zhaoyuxiang.cn
-author: Clark #yourname #天道总司
-place: yourhometown #杭州
-domain: yourdoamain #互联网
-company: yourcompany #Jeeyoo
-position: yourjob #Technical Support
-school: yourschool #浙江科技学院
-major: yourmajoy #测控技术与仪器
-resume: "http://zhaoyuxiang.cn/cv"
-profile: Time is money. #yourmotto #聪明在于勤奋，天才在于积累。
+email: magic5650@126.com
+author: Magic #yourname #magic范
+place: Guangzhou #杭州
+domain: yy.com #互联网
+company: 欢聚时代 #Jeeyoo
+position: Service Operations #业务运维
+school: bjtu.edu.cn #北京交通大学
+major: Computer Science&Technology#计算机科学与技术
+resume: "https://magic5650.github.io/blog"
+profile: You will be the best. #
 twitter_username: zyx19936688
-weibo_username:  zhaoyuxiang
-github_username:  Clark-Zhao
+weibo_username:  magic5650
+github_username:  magic5650
 
 # Comment Service (Disqus or 多说)
 #  choose one and un-comment the line to active it
