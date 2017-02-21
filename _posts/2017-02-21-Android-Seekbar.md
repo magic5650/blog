@@ -93,6 +93,7 @@ play_seekbar_bg.xml
 ```
 
 ### SeekBar样式xml片段
+
 ```
     <LinearLayout
         android:layout_width="match_parent"
@@ -147,15 +148,18 @@ play_seekbar_bg.xml
             android:textColor="@color/color_white"/>
     </LinearLayout>
 ```
-** SeekBar样式关键点 **
+
+**  SeekBar样式关键点  **
 - android:maxHeight="2dp"——控制进度条高度
-- 设置SeekBar控件边际，以便在滑块变大是可覆盖左右两边的控件，而不会被遮住     
+- 设置SeekBar控件边际，以便在滑块变大是可覆盖左右两边的控件，而不会被遮住
+
 ```
 android:layout_marginStart="-20dp"
 android:layout_marginEnd="-20dp"
 android:paddingStart="28dp"
 android:paddingEnd="28dp"
 ```
+
 - android:splitTrack="false"——控制滑块覆盖在进度条的上面
 - android:background="@android:color/transparent"——设置背景透明，去掉滑块变大时的周边光晕
 - android:progressDrawable="@drawable/play_seekbar_bg"——默认进度条
@@ -164,6 +168,7 @@ android:paddingEnd="28dp"
 ## 最关键的地方
 使用SeekBar的setThumb方法动态设置滑块
 代码
+
 ```
 seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -197,6 +202,7 @@ seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             }
         });
 ```
+
 #### 在用户开始按下滑块时onStartTrackingTouch
 //设置seekbarThumb相对位置可大于进度条15，保证thumb在变成40dp直径后可以滑动到进度条最末尾 
 seekBar.setThumbOffset(15); 
@@ -209,9 +215,10 @@ seekBar.setThumb(Thumb_normal);
 
 
 
-## * 踩坑过程 *
+## *  踩坑过程  *
 * 使用selector的xml文件设置SeekBar的android:thumb属性设置滑块 *
 play_seekbar_thumb.xml
+
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android"    
@@ -223,4 +230,5 @@ play_seekbar_thumb.xml
    <item android:drawable="@drawable/slider_thumb_normal" />
 </selector>
 ```
-** 坑：有些手机上按下或者移动滑块，滑块是变大了，但是由于SeekBar高度还是原来的，导致滑块被压扁成椭圆 **
+
+**  坑：有些手机上按下或者移动滑块，滑块是变大了，但是由于SeekBar高度还是原来的，导致滑块被压扁成椭圆  **
