@@ -151,8 +151,6 @@ play_seekbar_bg.xml
 - 设置SeekBar控件边际，以便在滑块变大是可覆盖左右两边的控件，而不会被遮住     
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>
-……
 android:layout_marginStart="-20dp"
 android:layout_marginEnd="-20dp"
 android:paddingStart="28dp"
@@ -167,7 +165,7 @@ android:paddingEnd="28dp"
 ## 最关键的地方
 使用SeekBar的setThumb方法动态设置滑块
 代码
-```
+{% highlight java %}
 seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -199,7 +197,7 @@ seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 isUserPressThumb = false;
             }
         });
-```
+{% endhighlight %}
 #### 在用户开始按下滑块时onStartTrackingTouch
 //设置seekbarThumb相对位置可大于进度条15，保证thumb在变成40dp直径后可以滑动到进度条最末尾 
 seekBar.setThumbOffset(15); 
