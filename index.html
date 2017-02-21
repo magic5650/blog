@@ -25,9 +25,9 @@ layout: default
 	{% if paginator.total_pages > 1 %}
 	<div class="pagination">
 	  {% if paginator.previous_page %}
-	    <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; 前进</a>
+	    <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; 后退</a>
 	  {% else %}
-	    <span>&laquo; 后退</span>
+	    <span>&laquo; 前进</span>
 	  {% endif %}
 
 	  {% for page in (1..paginator.total_pages) %}
@@ -41,9 +41,9 @@ layout: default
 	  {% endfor %}
 
 	  {% if paginator.next_page %}
-	    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">后退 &raquo;</a>
+	    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">前进 &raquo;</a>
 	  {% else %}
-	    <span>前进 &raquo;</span>
+	    <span>后退 &raquo;</span>
 	  {% endif %}
 	</div>
 	{% endif %}
