@@ -1,121 +1,169 @@
----
-layout: post
-title: Android仿酷狗音乐SeekBar——控制篇
-author: Magic
-date:   2017-02-21
-categories: Android
-permalink: /archivers/Android-Seekbar
----
-#Android仿酷狗音乐SeekBar——控制篇
-###需求:
-1. 根据后台播放状态调整SeekBar的滑块位置；
-2. 反馈用户的滑动滑块事件；
+# Android仿酷狗音乐SeekBar
+## 需求：仿酷狗音乐SeekBar
+直接上图，上代码
+![1903148-676fcbf2e5048392.png](http://upload-images.jianshu.io/upload_images/1903148-0414a84bd91e4ddc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![1903148-d3e5ab81fa2acd42.png](http://upload-images.jianshu.io/upload_images/1903148-d7a9c2b37322d59d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-###分析：
-一般我们的视频或者音乐播放是由后台Service播放的，而SeekBar是在前台Activity或者Fragment里，所以根据播放状态我们调整SeekBar滑块可以让Service主动发送数据给前台，而反馈用户滑块事件，直接在前台获得Service实例，然后操作相关控制媒体播放的方法即可。
 
-####1. 后台Service给前台发送媒体播放进度
-这里我们使用Timer新建一个Timertask，间隔执行，然后在暂停或者结束后停止发送
-```
-public void SeedPlayMsg(){
-        if(timer == null) {
-            Log.d(TAG, "创建timer对象");
-            timer = new Timer();//timer就是开启子线程执行任务，与纯粹的子线城不同的是可以控制子线城执行的时间，
-        }
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                //获取歌曲当前播放进度
-                int currentPosition = player.getCurrentPosition();
-                Message msg = AudioPlayActivity.handler.obtainMessage();
-                Bundle bundle = new Bundle();
-                msg.what = 1;
-                bundle.putInt("currentPosition", currentPosition);
-                bundle.putBoolean("isPlayComplete", false);
-                if (player.isPlaying()) {
-                    //把进度封装至消息对象中
-                    msg.setData(bundle);
-                    AudioPlayActivity.handler.sendMessage(msg);
-                }
-                else {
-                    if (isPlayComplete) {
-                        bundle.putBoolean("isPlayComplete", true);
-                        Log.d(TAG, "发送消息给主线程,播放已结束");
-                    }
-                    else{
-                        bundle.putBoolean("isPlayComplete", false);
-                    }
-                    msg.setData(bundle);
-                    AudioPlayActivity.handler.sendMessage(msg);
-                    Log.d(TAG, "结束TimeTask");
-                    timer.cancel();
-                }
-            }
-            //开始计时任务后的5毫秒后第一次执行run方法，以后每500毫秒执行一次
-        }, 200, 500);
-    }
-```
-*这里有个很重要的细节，就是发送播放结束的消息，一般我们认为当发送的位置等于媒体的长度时，我们就认为是结束了，可事实上不是这样的，因为MediaPlayer对象的getCurrentPosition()方法在媒体播放结束后获取到的值也与获取时常的方法getDuration()得到的值不一致，总是要小，而且还不固定。*
-**所以为了精确播放是否完成，我们还是由原生接口监听去判断播放是否完成**
-```
-        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                Log.d(TAG,"播放结束");
-                isPlayComplete = true;
-            }
-        });
-```
-####前台Activity或者Fragment接收当前媒体播放进度信息并，调整SeekBar进度
-```
-    static Handler handler = new Handler(){//handler是谷歌说明的定义成静态的，
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                default:
-                case 1:
-                    Bundle bundle = msg.getData();
-                    boolean isPlayComplete = bundle.getBoolean("isPlayComplete");
-                    int currentPosition = bundle.getInt("currentPosition");
-                    //根据当前位置判断录音是否结束，结束后更新UI
-                    if (isPlayComplete) {
-                        seekBar.setProgress(seekBar.getMax());
-                    }
-                    else {
-                        if (!isUserPressThumb) seekBar.setProgress(currentPosition);
-                    }
-                    break;
-                case 2:
-                    Bundle bundle2 = msg.getData();
-                    int duration = bundle2.getInt("duration");
-                    seekBar.setMax(duration);
-                    break;
-            }
-        }
-    };
-```
-*这里有个很重要的细节，和容易忽略，就是判断用户是否在拖动进度条，如果用户在拖动中，那么就执行setProgress；这个如果不做判断，在一些手机上会出现用户在媒体播放时拖动进度条还没放开，滑块跑到setProgress设置的位置上，然后马上又跑回用户拖动的位置上，很坑爹。*
-**所以这里我们加一个判断if (!isUserPressThumb)**
 
-前面我们说了getCurrentPosition()方法返回的数值（单位是毫秒）永远比getDuration()要小，而我们进度条的最大值是用getDuration()方法获取的值设置的，所以为了一致，我们要在接收到播放完成的消息后，将SeekBar调到最大值
-**if (isPlayComplete) { seekBar.setProgress(seekBar.getMax()); }**
-
-在媒体准备好后，我们要发送媒体的长度给前台，使用这个设置前台SeekBar的最大长度，当然，你也可以将SeekBar最大长度设置为某个值（默认100），然后跟进媒体播放进度进行等比换算，在这里我们不换算了，直接将媒体的长度设置为SeekBar的长度，简单易懂。
+** 难点：用户点击或者移动是SeekBar滑块是改变滑块的图案 **
+### 先画两种不同状态的滑块Thumb
+#### 平时状态：一个直径为10dp大小的白色的圆
+slider_thumb_normal.xml
 ```
-    public void SeedPlayDuration() {
-        Message msg = AudioPlayActivity.handler.obtainMessage();
-        msg.what = 2;
-        //把进度封装至消息对象中
-        Bundle bundle = new Bundle();
-        bundle.putInt("duration", getDuration());
-        msg.setData(bundle);
-        AudioPlayActivity.handler.sendMessage(msg);
-    }
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"    
+  android:shape="oval">    
+  <size    
+    android:width="10dp"    
+    android:height="10dp" />
+  <solid android:color="#ffffffff" />
+</shape>
 ```
-结合上面的前台Handler接收到消息，设置SeekBar最大长度。
-*（为保证后续开始播放后发送进度调整SeekBar不会超出SeekBar原来的最大长度，所以前一篇的定时发送位置的任务，我们是延迟200ms进行的）*
+#### 按下状态：一个直径为10dp大小的白色的圆，背景是半透明的直径为40dp的圆
+slider_thumb_pressed.xml
+```
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 白色前景 -->
+    <item android:id="@android:id/secondaryProgress"
+        android:gravity="center"
+        android:bottom="15dp"
+        android:top="15dp"
+        android:right="15dp"
+        android:left="15dp">
+        <shape
+            android:shape="oval">
+            <size
+                android:width="10dp"
+                android:height="10dp" />
+            <solid android:color="#ffffffff" />
+        </shape>
+    </item>
+    <!-- 透明阴影 -->
+    <item android:id="@android:id/background"
+        android:gravity="center">
+        <shape
+            android:shape="oval">
+            <size
+                android:height="40dp"
+                android:width="40dp" />
+            <solid android:color="#96ffffff" />
+        </shape>
+    </item>
+</layer-list>
+```
+### 画进度条
+(不设置高度,由SeekBar自身控制,SeekBar控件android:layout_height="wrap_content")
+play_seekbar_bg.xml
+```
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape>
+            <size
+                android:height="2dp" />
+            <corners android:radius="5dp"/>
+            <solid android:color="#88ffffff" />
+        </shape>
+    </item>
+    <item
+        android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <size
+                    android:height="2dp" />
+                <corners android:radius="5dp"/>
+                <solid android:color="#88ffffff" />
+            </shape>
+        </clip>
+    </item>
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <size
+                    android:height="2dp"/>
+                <corners android:radius="5dp"/>
+                <solid android:color="#ffffffff" />
+            </shape>
+        </clip>
+    </item>
+</layer-list>
+```
 
-####2. 反馈用户的滑动滑块事件
-由前台监听调用后台Service方法完成
+### SeekBar样式xml片段
+```
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/seekbar_slider_time"
+            android:textColor="@color/color_white"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="invisible" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/seekBar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tx_currentTime"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/color_white"/>
+        <SeekBar
+            android:id="@+id/seedBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:splitTrack="false"
+            android:maxHeight="2dp"
+            android:progressDrawable="@drawable/play_seekbar_bg"
+            android:thumb="@drawable/slider_thumb_normal" />
+        <TextView
+            android:id="@+id/tx_maxTime"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/color_white"/>
+    </LinearLayout>
+```
+** SeekBar样式关键点 **
+- android:maxHeight="2dp"——控制进度条高度
+- 设置SeekBar控件边际，以便在滑块变大是可覆盖左右两边的控件，而不会被遮住     
+```
+android:layout_marginStart="-20dp"
+android:layout_marginEnd="-20dp"
+android:paddingStart="28dp"
+android:paddingEnd="28dp"
+```
+- android:splitTrack="false"——控制滑块覆盖在进度条的上面
+- android:background="@android:color/transparent"——设置背景透明，去掉滑块变大时的周边光晕
+- android:progressDrawable="@drawable/play_seekbar_bg"——默认进度条
+- android:thumb="@drawable/slider_thumb_normal"——默认滑块
+
+## 最关键的地方
+使用SeekBar的setThumb方法动态设置滑块
+代码
 ```
 seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -145,76 +193,34 @@ seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 seekBar.setThumbOffset(0);
                 seekBar.setThumb(Thumb_normal);
                 Seekbar_slider_time.setVisibility(View.INVISIBLE);
-                if(!(seekBar.getProgress() == seekBar.getMax())) isUserPressThumb = false;
+                isUserPressThumb = false;
             }
         });
 ```
-主要是在onStopTrackingTouch中，也就是用户点击或滑动滑块完成阶段执行
-mi.seekTo(seekBar.getProgress());——这里mi是获取到的Service对象，seekTo是设置当前播放位置的方法。
+#### 在用户开始按下滑块时onStartTrackingTouch
+//设置seekbarThumb相对位置可大于进度条15，保证thumb在变成40dp直径后可以滑动到进度条最末尾 
+seekBar.setThumbOffset(15); 
+//改变滑块图案
+seekBar.setThumb(Thumb_pressed);
 
-在onStartTrackingTouch中，也就是用户开始点击或者滑动滑块开始阶段，我们设置
-isUserPressThumb = true;
-以配合前面Handler中控制SeekBar位置的代码，原因我前面已经说了。
-最后在onStopTrackingTouch中，设置
- if(!(seekBar.getProgress() == seekBar.getMax())) isUserPressThumb = false;(如果没有拖动到最后)
+#### 在用户按下滑块结束后onStopTrackingTouch，恢复滑块及seekbar高度
+seekBar.setThumbOffset(0); 
+seekBar.setThumb(Thumb_normal);
 
-至于在onProgressChanged中，用户点击或者拖动滑块中
+
+
+## * 踩坑过程 *
+* 使用selector的xml文件设置SeekBar的android:thumb属性设置滑块 *
+play_seekbar_thumb.xml
 ```
-                if(fromUser){
-                    Seekbar_slider_time.setText(updateCurrentTimeText(progress));
-                }
-                tx_currentTime.setText(updateCurrentTimeText(progress));
-                if(progress == seekBar.getMax()){
-                    pauseIcon.setLayoutParams(miss);
-                    playIcon.setLayoutParams(show);
-                }
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"    
+   android:constantSize="false"    
+   android:variablePadding="false">    
+   <item android:state_focused="true" android:state_pressed="false" android:drawable="@drawable/slider_thumb_normal" />    
+   <item android:state_focused="true" android:state_pressed="true" android:drawable="@drawable/slider_thumb_pressed" />    
+   <item android:state_focused="false" android:state_pressed="true" android:drawable="@drawable/slider_thumb_pressed" />    
+   <item android:drawable="@drawable/slider_thumb_normal" />
+</selector>
 ```
-需要注意的是boolean fromUser这个参数，为true时，表示是用户改变的滑块位置，false时，是系统改变的，也就是我们前面Handler中进行的改变；
-如果是用户拖动，我们相应的在滑块上面给用户提示当前到什么位置了
-Seekbar_slider_time.setText(updateCurrentTimeText(progress));
-当然，这个控件平时是隐藏的，所以点击开始时onStartTrackingTouch，我们需要显示它
-Seekbar_slider_time.setVisibility(View.VISIBLE);
-拖动或点击结束后onStopTrackingTouch，我们由隐藏它
-Seekbar_slider_time.setVisibility(View.INVISIBLE);
-
-在onProgressChanged我们设置显示媒体的位置，代表播放到哪里了，或者即将播放到哪里了
-tx_currentTime.setText(updateCurrentTimeText(progress));
-
-另外当滑块滑动到最后了以后（由前面Handler接收到播放完成后设置的，也可能是用户自己拖动到了最后）
-我们需要变换播放或者暂停按钮
-if(progress == seekBar.getMax())
-{ 
-pauseIcon.setLayoutParams(miss);
-playIcon.setLayoutParams(show); 
-}
-
-附上毫秒装换为时间格式hh:mm:ss的方法
-```
-public String updateCurrentTimeText(int currentPosition){
-        try {
-            int time= currentPosition/1000;
-            if (time >= 3600) {
-                int hour = time/3600;
-                int minute = (time/60) % 60;
-                int second = time % 60;
-                String Time = String.format(Locale.getDefault(),"%02d:%02d:%02d", hour, minute, second);
-                //tx_currentTime.setText(currentTime);
-                return  Time;
-            }
-            else{
-                int minute = time/60;
-                int second = time % 60;
-                String Time = String.format(Locale.getDefault(),"%02d:%02d", minute, second);
-                //tx_currentTime.setText(currentTime);
-                return  Time;
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    };
-```
-
-项目地址https://github.com/magic5650/Recoderapp
+** 坑：有些手机上按下或者移动滑块，滑块是变大了，但是由于SeekBar高度还是原来的，导致滑块被压扁成椭圆 **
