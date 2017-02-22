@@ -21,7 +21,7 @@ github_username:  magic5650
 
 # Comment Service (Disqus or 多说)
 #  choose one and un-comment the line to active it
-disqus_shortname: zhaoyuxiang   
+disqus_shortname: magic5650   
 # get one: https://disqus.com/admin/signup/
 # duoshuo_shortname: clark-zhao  
 # get one: http://duoshuo.com/create-site/
@@ -32,6 +32,9 @@ gems:
  - jekyll-gist
  - jemoji
 
+repository: magic5650/blog
+gist:
+  noscript: false
 # Build settings
 paginate: 2
 paginate_path: "/page:num"

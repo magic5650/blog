@@ -4,7 +4,7 @@ title: Android Seekbar style
 author: magic
 date:   2017-02-21
 categories: Android
-permalink: /archivers/Android-Seekbar
+permalink: /archivers/Android-Seekbar-Style
 ---
 # Android仿酷狗音乐SeekBar——样式篇
 
@@ -245,3 +245,5 @@ play_seekbar_thumb.xml
 ```
 
 **坑：有些手机上按下或者移动滑块，滑块是变大了，但是由于SeekBar高度还是原来的，导致滑块被压扁成椭圆**
+
+项目地址[https://github.com/magic5650/Recoderapp](https://github.com/magic5650/Recoderapp "magic5650 github Recoderapp")

@@ -238,4 +238,4 @@ public String updateCurrentTimeText(int currentPosition){
     };
 {% endhighlight %}
 
-项目地址https://github.com/magic5650/Recoderapp
+项目地址[https://github.com/magic5650/Recoderapp](https://github.com/magic5650/Recoderapp "magic5650 github Recoderapp")
