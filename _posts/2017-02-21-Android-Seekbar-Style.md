@@ -6,7 +6,7 @@ date:   2017-02-21
 categories: Android
 permalink: /archivers/Android-Seekbar
 ---
-# Android仿酷狗音乐SeekBar
+# Android仿酷狗音乐SeekBar——样式篇
 
 ## 需求：仿酷狗音乐SeekBar
 直接上图，上代码
