@@ -7,15 +7,20 @@ categories: Android
 permalink: /archivers/Android-Seekbar
 ---
 # Android仿酷狗音乐SeekBar
+
 ## 需求：仿酷狗音乐SeekBar
 直接上图，上代码
 ![1903148-676fcbf2e5048392.png](http://upload-images.jianshu.io/upload_images/1903148-0414a84bd91e4ddc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ![1903148-d3e5ab81fa2acd42.png](http://upload-images.jianshu.io/upload_images/1903148-d7a9c2b37322d59d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 **难点：用户点击或者移动是SeekBar滑块是改变滑块的图案**
+
 ### 先画两种不同状态的滑块Thumb
+
 #### 平时状态：一个直径为10dp大小的白色的圆
+
 slider_thumb_normal.xml
+
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"    
@@ -26,8 +31,11 @@ slider_thumb_normal.xml
   <solid android:color="#ffffffff" />
 </shape>
 ```
+
 #### 按下状态：一个直径为10dp大小的白色的圆，背景是半透明的直径为40dp的圆
+
 slider_thumb_pressed.xml
+
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
@@ -59,9 +67,12 @@ slider_thumb_pressed.xml
     </item>
 </layer-list>
 ```
+
 ### 画进度条
+
 (不设置高度,由SeekBar自身控制,SeekBar控件android:layout_height="wrap_content")
 play_seekbar_bg.xml
+
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list
@@ -154,6 +165,7 @@ play_seekbar_bg.xml
             android:textColor="@color/color_white"/>
     </LinearLayout>
 ```
+
 **SeekBar样式关键点**
 - android:maxHeight="2dp"——控制进度条高度
 - 设置SeekBar控件边际，以便在滑块变大是可覆盖左右两边的控件，而不会被遮住     
