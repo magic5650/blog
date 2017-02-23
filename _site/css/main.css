@@ -20,12 +20,8 @@ a {
   clear: both; }
 
 #header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
   width: 100%;
-  height: 45px;
+  height: auto;
   background: #0767c8;
   background: -webkit-linear-gradient(top, #086ed5, #055db5);
   background: linear-gradient(to bottom, #086ed5, #055db5);
@@ -48,8 +44,7 @@ a {
     font-size: 35px;
     font-weight: normal;
     color: #fff;
-    float: left;
-    }
+    float: left; }
   #header nav {
     vertical-align: top;
     margin-left: 18px;
@@ -65,7 +60,7 @@ a {
         text-align: center;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
         height: 45px;
-        width: 55px;
+        width: 54px;
         line-height: 45px; }
   #header .master {
     width: 120px;
@@ -98,8 +93,7 @@ main {
   float: left; }
   @media screen and (min-width: 960px) {
     .content {
-      width: 960px;
-      margin: 45px 0 0 0; } }
+      width: 960px; } }
   .content .content-inner-title {
     margin-bottom: 10px;
     color: #666; }
@@ -131,8 +125,7 @@ main {
 .sidebar {
   width: 280px;
   float: left;
-  margin-left: -280px;
-  margin-top: 45px; }
+  margin-left: -280px; }
   .sidebar .avatar {
     display: block;
     margin: 0 auto;
@@ -149,12 +142,11 @@ main {
     color: #0e78e7; }
   .sidebar .col-box-title {
     border-top: 1px solid #eee;
-    padding: 20px 0 10px 0;
-    margin: 5px 25px; }
+    padding: 20px 0 10px 0; }
   .sidebar li {
     list-style: circle;
     color: #222;
-    margin: 5px 45px; }
+    margin: 5px 0; }
     .sidebar li a {
       color: #0664C2; }
     .sidebar li a:hover {
@@ -405,9 +397,8 @@ div.go-top div.stick {
     border-bottom: 1px solid #eee;
     overflow: hidden;
     padding: 7px 14px;
-    font-size: 18px;
-    margin: 0;
-    }
+    font-size: 14px;
+    margin: 0; }
   .home-category .post-list {
     padding: 0 14px; }
     .home-category .post-list .category {
@@ -620,64 +611,3 @@ code, pre, code span {
     color: #a6e22e; }
 
 /*# sourceMappingURL=main.css.map */
-// Share
-#share {
-    font-size: 18px;
-    line-height: 1.2;
-    display: inline-block;
-    float: right;
-    margin: 0;
-    a {
-        color: rgb(51, 51, 51);
-        border: none;
-        &:hover {
-            background: none;
-        }
-        &:after {
-            content: ''!important;
-            margin: 0!important;
-        }
-    }
-    #wechat {
-        &:hover,
-        &.light {
-            color: rgb(81, 195, 50);
-        }
-    }
-    #weibo {
-        &:hover {
-            color: rgb(231, 44, 64);
-        }
-    }
-    #qzone {
-        &:hover {
-            color: rgb(252, 185, 32);
-        }
-    }
-    #twitter {
-        &:hover {
-            color: rgb(85, 172, 238);
-        }
-    }
-    #facebook {
-        &:hover {
-            color: rgb(65, 93, 152);
-        }
-    }
-    #gplus {
-        &:hover {
-            color: rgb(220, 80, 70);
-        }
-    }
-    #qrcode {
-        display: none;
-        position: absolute;
-        bottom: 30px;
-        right: 80px;
-        background: $white;
-        padding: 5px;
-        border: 1px solid $lightgray;
-        border-radius: 5px;
-        box-shadow: 1px 1px 2px rgb(150, 150, 150);
-    }
-}

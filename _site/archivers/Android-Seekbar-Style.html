@@ -64,18 +64,18 @@
   </header>
 
   <article class="post-content">
-    <h1 id="androidseekbar">Android仿酷狗音乐SeekBar——样式篇</h1>
+    <h1 id="android仿酷狗音乐seekbar样式篇">Android仿酷狗音乐SeekBar——样式篇</h1>
 
-<h2 id="seekbar">需求：仿酷狗音乐SeekBar</h2>
+<h2 id="需求仿酷狗音乐seekbar">需求：仿酷狗音乐SeekBar</h2>
 <p>直接上图，上代码
 <img src="http://upload-images.jianshu.io/upload_images/1903148-0414a84bd91e4ddc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1903148-676fcbf2e5048392.png" />
 <img src="http://upload-images.jianshu.io/upload_images/1903148-d7a9c2b37322d59d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1903148-d3e5ab81fa2acd42.png" /></p>
 
 <p><strong>难点：用户点击或者移动是SeekBar滑块是改变滑块的图案</strong></p>
 
-<h3 id="thumb">先画两种不同状态的滑块Thumb</h3>
+<h3 id="先画两种不同状态的滑块thumb">先画两种不同状态的滑块Thumb</h3>
 
-<h4 id="dp">平时状态：一个直径为10dp大小的白色的圆</h4>
+<h4 id="平时状态一个直径为10dp大小的白色的圆">平时状态：一个直径为10dp大小的白色的圆</h4>
 
 <p>slider_thumb_normal.xml</p>
 
@@ -90,7 +90,7 @@
 </code></pre>
 </div>
 
-<h4 id="dp40dp">按下状态：一个直径为10dp大小的白色的圆，背景是半透明的直径为40dp的圆</h4>
+<h4 id="按下状态一个直径为10dp大小的白色的圆背景是半透明的直径为40dp的圆">按下状态：一个直径为10dp大小的白色的圆，背景是半透明的直径为40dp的圆</h4>
 
 <p>slider_thumb_pressed.xml</p>
 
@@ -126,7 +126,7 @@
 </code></pre>
 </div>
 
-<h3 id="section">画进度条</h3>
+<h3 id="画进度条">画进度条</h3>
 
 <p>(不设置高度,由SeekBar自身控制,SeekBar控件android:layout_height=”wrap_content”)
 play_seekbar_bg.xml</p>
@@ -167,7 +167,7 @@ play_seekbar_bg.xml</p>
 </code></pre>
 </div>
 
-<h3 id="seekbarxml">SeekBar样式xml片段</h3>
+<h3 id="seekbar样式xml片段">SeekBar样式xml片段</h3>
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
     <span class="nt">&lt;LinearLayout</span>
         <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
@@ -224,9 +224,11 @@ play_seekbar_bg.xml</p>
 </code></pre>
 </div>
 
-<p><strong>SeekBar样式关键点</strong>
-- android:maxHeight=”2dp”——控制进度条高度
-- 设置SeekBar控件边际，以便在滑块变大是可覆盖左右两边的控件，而不会被遮住</p>
+<p><strong>SeekBar样式关键点</strong></p>
+<ul>
+  <li>android:maxHeight=”2dp”——控制进度条高度</li>
+  <li>设置SeekBar控件边际，以便在滑块变大是可覆盖左右两边的控件，而不会被遮住</li>
+</ul>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>android:layout_marginStart="-20dp"
 android:layout_marginEnd="-20dp"
@@ -242,7 +244,7 @@ android:paddingEnd="28dp"
   <li>android:thumb=”@drawable/slider_thumb_normal”——默认滑块</li>
 </ul>
 
-<h2 id="section-1">最关键的地方</h2>
+<h2 id="最关键的地方">最关键的地方</h2>
 <p>使用SeekBar的setThumb方法动态设置滑块
 代码</p>
 
@@ -278,17 +280,17 @@ android:paddingEnd="28dp"
             <span class="o">}</span>
         <span class="o">});</span></code></pre></figure>
 
-<h4 id="onstarttrackingtouch">在用户开始按下滑块时onStartTrackingTouch</h4>
+<h4 id="在用户开始按下滑块时onstarttrackingtouch">在用户开始按下滑块时onStartTrackingTouch</h4>
 <p>//设置seekbarThumb相对位置可大于进度条15，保证thumb在变成40dp直径后可以滑动到进度条最末尾 
 seekBar.setThumbOffset(15); 
 //改变滑块图案
 seekBar.setThumb(Thumb_pressed);</p>
 
-<h4 id="onstoptrackingtouchseekbar">在用户按下滑块结束后onStopTrackingTouch，恢复滑块及seekbar高度</h4>
+<h4 id="在用户按下滑块结束后onstoptrackingtouch恢复滑块及seekbar高度">在用户按下滑块结束后onStopTrackingTouch，恢复滑块及seekbar高度</h4>
 <p>seekBar.setThumbOffset(0); 
 seekBar.setThumb(Thumb_normal);</p>
 
-<h2 id="section-2"><em>踩坑过程</em></h2>
+<h2 id="踩坑过程"><em>踩坑过程</em></h2>
 <p><em>使用selector的xml文件设置SeekBar的android:thumb属性设置滑块</em>
 play_seekbar_thumb.xml</p>
 
@@ -309,6 +311,8 @@ play_seekbar_thumb.xml</p>
 <p>项目地址<a href="https://github.com/magic5650/Recoderapp" title="magic5650 github Recoderapp">https://github.com/magic5650/Recoderapp</a></p>
 
   </article>
+  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+  <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
   
 
 <div class="post-comments">
