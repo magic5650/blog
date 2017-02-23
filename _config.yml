@@ -1,8 +1,9 @@
 # Site settings
 title: 诗宁
-url: "https://magic5650.github.io/blog"    # the protocol and hostname of your site, eg. `http://zhaoyuxiang.cn/blog`
+url: "https://magic5650.github.io/blog"
+site_title: 诗宁博客
 baseurl: "" # the prefix of your site uri, eg. `/bohu-jekyll-theme` or just one slash `/`
-#timezone: Asia/Shanghai
+timezone: Asia/Shanghai
 description: magic5650的个人博客网站。
 # Your information
 email: magic5650@126.com
