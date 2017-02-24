@@ -13,7 +13,7 @@ layout: default
 	        <div class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</div>
 
 	        <div class="post-excerpt">
-	          {{ post.excerpt }}
+	          {{ post.excerpt | strip_html | newline_to_br }}
 	          <p>
 	            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">阅读全文 &raquo;</a>
 	          </p>
@@ -27,7 +27,6 @@ layout: default
 	  {% if paginator.previous_page %}
 	    <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo; 上一页</a>
 	  {% else %}
-<!-- 	    <span>&laquo; 前进</span> -->
 	  {% endif %}
 
 	  {% for page in (1..paginator.total_pages) %}
@@ -43,7 +42,6 @@ layout: default
 	  {% if paginator.next_page %}
 	    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">下一页 &raquo;</a>
 	  {% else %}
-<!-- 	    <span>后退 &raquo;</span> -->
 	  {% endif %}
 	</div>
 	{% endif %}

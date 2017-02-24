@@ -4,19 +4,16 @@ title: Android Seekbar Control
 author: magic
 date:   2017-02-22
 categories: Android
+tags: android seekbar
 permalink: /archivers/Android-Seekbar-Control
 ---
 # Android仿酷狗音乐SeekBar——控制篇
-
 ### 需求:
-
-1. 根据后台播放状态调整SeekBar的滑块位置；
-2. 反馈用户的滑动滑块事件；
+1. 根据后台播放状态调整SeekBar的滑块位置;
+2. 反馈用户的滑动滑块事件;
 
 ### 分析：
-
 一般我们的视频或者音乐播放是由后台Service播放的，而SeekBar是在前台Activity或者Fragment里，所以根据播放状态我们调整SeekBar滑块可以让Service主动发送数据给前台，而反馈用户滑块事件，直接在前台获得Service实例，然后操作相关控制媒体播放的方法即可。
-
 #### 1. 后台Service给前台发送媒体播放进度
 
 这里我们使用Timer新建一个Timertask，间隔执行，然后在暂停或者结束后停止发送
@@ -62,9 +59,7 @@ public void SeedPlayMsg(){
 {% endhighlight %}
 
 *这里有个很重要的细节，就是发送播放结束的消息，一般我们认为当发送的位置等于媒体的长度时，我们就认为是结束了，可事实上不是这样的，因为MediaPlayer对象的getCurrentPosition()方法在媒体播放结束后获取到的值也与获取时常的方法getDuration()得到的值不一致，总是要小，而且还不固定。*
-
 **所以为了精确播放是否完成，我们还是由原生接口监听去判断播放是否完成**
-
 {% highlight java %}
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -74,9 +69,7 @@ public void SeedPlayMsg(){
             }
         });
 {% endhighlight %}
-
 #### 前台Activity或者Fragment接收当前媒体播放进度信息并，调整SeekBar进度
-
 {% highlight java %}
     static Handler handler = new Handler(){//handler是谷歌说明的定义成静态的，
         public void handleMessage(Message msg) {
@@ -103,17 +96,11 @@ public void SeedPlayMsg(){
         }
     };
 {% endhighlight %}
-
 *这里有个很重要的细节，和容易忽略，就是判断用户是否在拖动进度条，如果用户在拖动中，那么就执行setProgress；这个如果不做判断，在一些手机上会出现用户在媒体播放时拖动进度条还没放开，滑块跑到setProgress设置的位置上，然后马上又跑回用户拖动的位置上，很坑爹。*
-
 **所以这里我们加一个判断if (!isUserPressThumb)**
-
 前面我们说了getCurrentPosition()方法返回的数值（单位是毫秒）永远比getDuration()要小，而我们进度条的最大值是用getDuration()方法获取的值设置的，所以为了一致，我们要在接收到播放完成的消息后，将SeekBar调到最大值
-
 **if (isPlayComplete) { seekBar.setProgress(seekBar.getMax()); }**
-
 在媒体准备好后，我们要发送媒体的长度给前台，使用这个设置前台SeekBar的最大长度，当然，你也可以将SeekBar最大长度设置为某个值（默认100），然后跟进媒体播放进度进行等比换算，在这里我们不换算了，直接将媒体的长度设置为SeekBar的长度，简单易懂。
-
 {% highlight java %}
     public void SeedPlayDuration() {
         Message msg = AudioPlayActivity.handler.obtainMessage();
@@ -125,11 +112,8 @@ public void SeedPlayMsg(){
         AudioPlayActivity.handler.sendMessage(msg);
     }
 {% endhighlight %}
-
 结合上面的前台Handler接收到消息，设置SeekBar最大长度。
-
 *（为保证后续开始播放后发送进度调整SeekBar不会超出SeekBar原来的最大长度，所以前一篇的定时发送位置的任务，我们是延迟200ms进行的）*
-
 #### 2. 反馈用户的滑动滑块事件
 由前台监听调用后台Service方法完成
 
